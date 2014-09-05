@@ -13,7 +13,7 @@ from django.contrib import messages
 from django.utils.translation import ugettext_lazy as _
 
 from ralph_scrooge.app import Scrooge
-from ralph_scrooge.menus import statement_menu
+from ralph_scrooge.sidebar_menus import statement_menu
 from ralph_scrooge.models import Statement
 from ralph_scrooge.views.base import Base
 from ralph_scrooge.views.reports import format_csv_header
