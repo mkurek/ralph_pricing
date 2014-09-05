@@ -23,22 +23,22 @@ class ScroogeMenu(Menu):
     def get_submodules(self):
         return [
             MenuItem(
-                _("Ventures report"),
-                name='report-services',
+                _("Costs report"),
+                name='services-costs-report',
                 fugue_icon='fugue-store-medium',
-                view_name='all_ventures',
+                view_name='services_costs_report',
             ),
             MenuItem(
-                _("Devices report"),
+                _("Service details report"),
                 name='devices',
                 fugue_icon='fugue-wooden-box',
                 view_name='devices',
             ),
             MenuItem(
-                _("Ventures daily usages"),
-                name='ventures-daily-usages',
+                _("Usages report"),
+                name='services-usages-report',
                 fugue_icon='fugue-calendar-day',
-                view_name='ventures_daily_usages',
+                view_name='services_usages_report',
             ),
             MenuItem(
                 _("Devices ventures changes"),

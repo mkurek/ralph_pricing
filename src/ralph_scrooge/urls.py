@@ -15,9 +15,9 @@ from ralph_scrooge.views.extra_costs import ExtraCosts
 from ralph_scrooge.views.usages import Usages
 from ralph_scrooge.views.statement import Statements
 from ralph_scrooge.views.teams_percent import TeamsPercent
-from ralph_scrooge.views.report_services import ServicesReport
+from ralph_scrooge.views.report_services_costs import ServicesCostsReport
+from ralph_scrooge.views.report_services_usages import ServicesUsagesReport
 from ralph_scrooge.views.ventures_changes import VenturesChanges
-from ralph_scrooge.views.ventures_daily_usages import VenturesDailyUsages
 
 v09_api = Api(api_name='v0.9')
 for r in (ServiceUsageResource, ):
@@ -26,11 +26,39 @@ for r in (ServiceUsageResource, ):
 urlpatterns = patterns(
     '',
     url(r'^api/', include(v09_api.urls)),
+    # reports
     url(
         r'^$',
-        login_required(ServicesReport.as_view()),
-        name='all_ventures',
+        login_required(ServicesCostsReport.as_view()),
+        name='services_costs_report',
     ),
+    url(
+        r'^services-costs-report/$',
+        login_required(ServicesCostsReport.as_view()),
+        name='services_costs_report',
+    ),
+    url(
+        r'^services-usages-report/$',
+        login_required(ServicesUsagesReport.as_view()),
+        name='services_usages_report',
+    ),
+
+    url(
+        r'^ventures-changes/$',
+        login_required(VenturesChanges.as_view()),
+        name='ventures_changes',
+    ),
+    url(
+        r'^devices/$',
+        login_required(Devices.as_view()),
+        name='devices',
+    ),
+    url(
+        r'^devices/(?P<venture>\d+)/$',
+        login_required(Devices.as_view()),
+        name='devices',
+    ),
+    # costs forms
     url(
         r'^extra-costs/$',
         login_required(ExtraCosts.as_view()),
@@ -71,31 +99,7 @@ urlpatterns = patterns(
         login_required(TeamsPercent.as_view()),
         name='teams',
     ),
-    url(
-        r'^services-report/$',
-        login_required(ServicesReport.as_view()),
-        name='all_ventures',
-    ),
-    url(
-        r'^ventures-daily-usages-report/$',
-        login_required(VenturesDailyUsages.as_view()),
-        name='ventures_daily_usages',
-    ),
-    url(
-        r'^ventures-changes/$',
-        login_required(VenturesChanges.as_view()),
-        name='ventures_changes',
-    ),
-    url(
-        r'^devices/$',
-        login_required(Devices.as_view()),
-        name='devices',
-    ),
-    url(
-        r'^devices/(?P<venture>\d+)/$',
-        login_required(Devices.as_view()),
-        name='devices',
-    ),
+    # statements
     url(
         r'^statement/$',
         login_required(Statements.as_view()),

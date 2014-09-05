@@ -9,15 +9,15 @@ from django.shortcuts import get_object_or_404
 from django.contrib import messages
 from django.http import HttpResponseRedirect
 
-from ralph_pricing.app import Scrooge
-from ralph_pricing.forms import TeamDaterangeFormSet
-from ralph_pricing.menus import teams_menu
-from ralph_pricing.models import Team
-from ralph_pricing.views.base import Base
+from ralph_scrooge.app import Scrooge
+from ralph_scrooge.forms import TeamDaterangeFormSet
+from ralph_scrooge.menus import teams_menu
+from ralph_scrooge.models import Team
+from ralph_scrooge.views.base import Base
 
 
 class Teams(Base):
-    template_name = 'ralph_pricing/teams.html'
+    template_name = 'ralph_scrooge/teams.html'
     submodule_name = 'teams'
 
     def __init__(self, *args, **kwargs):

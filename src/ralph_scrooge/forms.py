@@ -243,7 +243,7 @@ class DateRangeForm(forms.Form):
     )
 
 
-class ServicesReportForm(DateRangeForm):
+class ServicesCostsReportForm(DateRangeForm):
     forecast = forms.BooleanField(
         required=False,
         label=_("Forecast"),
@@ -273,8 +273,10 @@ class DeviceReportForm(DateRangeForm):
     service = forms.ModelChoiceField(queryset=Service.objects.all())
 
 
-class VenturesDailyUsagesForm(DateRangeForm):
-    """Form schema. Used to generate venture daily usages reports"""
+class ServicesUsagesReportForm(DateRangeForm):
+    """
+    Form schema. Used to generate services environments daily usages report
+    """
     is_active = forms.BooleanField(
         required=False,
         label=_("Show only active"),
