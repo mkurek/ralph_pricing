@@ -24,12 +24,14 @@ def usages_generator(start, end):
     base_usage_type = UsageTypeFactory(
         usage_type='BU',
         by_cost=True,
+        is_manually_type=True,
     )
 
     # regular usage
     regular_usage_type = UsageTypeFactory(
         usage_type='RU',
         by_cost=False,
+        is_manually_type=True,
     )
 
     # team

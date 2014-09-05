@@ -30,6 +30,7 @@ class ServicesUsagesReport(BasePluginReport):
     section = 'services-usages-report'
     report_name = _('Services Usages Report')
     submodule_name = 'services-usages-report'
+    allow_statement = False   # temporary
 
     @property
     def initial(self):

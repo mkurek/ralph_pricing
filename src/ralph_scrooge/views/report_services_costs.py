@@ -28,6 +28,7 @@ class ServicesCostsReport(BasePluginReport):
     section = 'services-costs-report'
     report_name = _('Services Costs Report')
     submodule_name = 'services-costs-report'
+    allow_statement = False   # temporary
 
     @classmethod
     @memoize

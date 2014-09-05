@@ -12,7 +12,7 @@ from tastypie.api import Api
 from ralph_scrooge.api import ServiceUsageResource
 from ralph_scrooge.views.devices import Devices
 from ralph_scrooge.views.extra_costs import ExtraCosts
-from ralph_scrooge.views.usages import Usages
+from ralph_scrooge.views.usage_types import UsageTypes
 from ralph_scrooge.views.statement import Statements
 from ralph_scrooge.views.teams_percent import TeamsPercent
 from ralph_scrooge.views.report_services_costs import ServicesCostsReport
@@ -71,15 +71,15 @@ urlpatterns = patterns(
         name='extra_costs',
     ),
     url(
-        r'^usages/$',
-        login_required(Usages.as_view()),
-        name='usages',
-        kwargs={'usage': None},
+        r'^usage-types/$',
+        login_required(UsageTypes.as_view()),
+        name='usage_types',
+        kwargs={'usage_type_id': None},
     ),
     url(
-        r'^usages/(?P<usage>[^/]+)/$',
-        login_required(Usages.as_view()),
-        name='usages',
+        r'^usage-types/(?P<usage_type_id>[^/]+)/$',
+        login_required(UsageTypes.as_view()),
+        name='usage_types',
         kwargs={'type': 'price'},
     ),
     url(
@@ -89,13 +89,13 @@ urlpatterns = patterns(
         kwargs={'team': None, 'daterange': None},
     ),
     url(
-        r'^teams/(?P<team>[^/]+)/$',
+        r'^teams/(?P<team_id>[^/]+)/$',
         login_required(TeamsPercent.as_view()),
         name='teams',
         kwargs={'daterange': None},
     ),
     url(
-        r'^teams/(?P<team>[^/]+)/(?P<daterange>[^/]+)/$',
+        r'^teams/(?P<team_id>[^/]+)/(?P<daterange>[^/]+)/$',
         login_required(TeamsPercent.as_view()),
         name='teams',
     ),

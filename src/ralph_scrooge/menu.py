@@ -32,7 +32,7 @@ class ScroogeMenu(Menu):
                 _("Service details report"),
                 name='devices',
                 fugue_icon='fugue-wooden-box',
-                view_name='devices',
+                # view_name='devices',
             ),
             MenuItem(
                 _("Usages report"),
@@ -40,12 +40,12 @@ class ScroogeMenu(Menu):
                 fugue_icon='fugue-calendar-day',
                 view_name='services_usages_report',
             ),
-            MenuItem(
-                _("Devices ventures changes"),
-                name='ventures-changes',
-                fugue_icon='fugue-arrow-switch',
-                view_name='ventures_changes',
-            ),
+            # MenuItem(
+            #     _("Devices ventures changes"),
+            #     name='ventures-changes',
+            #     fugue_icon='fugue-arrow-switch',
+            #     view_name='ventures_changes',
+            # ),
             MenuItem(
                 _("Extra costs"),
                 name='extra-costs',
@@ -54,22 +54,22 @@ class ScroogeMenu(Menu):
             ),
             MenuItem(
                 _("Usage types"),
-                name='usages',
+                name='usage-types',
                 fugue_icon='fugue-beaker',
-                view_name='usages',
+                view_name='usage_types',
             ),
-            MenuItem(
-                _("Teams"),
-                name='teams',
-                fugue_icon='fugue-users',
-                view_name='teams',
-            ),
-            MenuItem(
-                _("Statements"),
-                name='statement',
-                fugue_icon='fugue-clock-history',
-                view_name='statement',
-            ),
+            # MenuItem(
+            #     _("Teams"),
+            #     name='teams',
+            #     fugue_icon='fugue-users',
+            #     view_name='teams',
+            # ),
+            # MenuItem(
+            #     _("Statements"),
+            #     name='statement',
+            #     fugue_icon='fugue-clock-history',
+            #     view_name='statement',
+            # ),
         ]
 
     def get_sidebar_items(self):
