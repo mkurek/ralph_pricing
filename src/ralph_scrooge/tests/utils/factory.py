@@ -54,6 +54,7 @@ class UsageTypeFactory(DjangoModelFactory):
     FACTORY_FOR = models.UsageType
 
     name = Sequence(lambda n: 'UsageType #%s' % n)
+    symbol = Sequence(lambda n: 'ut%s' % n)
 
 
 class PricingObjectFactory(DjangoModelFactory):
@@ -61,6 +62,7 @@ class PricingObjectFactory(DjangoModelFactory):
 
     type = 1
     service_environment = SubFactory(ServiceEnvironmentFactory)
+    name = Sequence(lambda n: 'Pricing Object #%s' % n)
 
 
 class DailyPricingObjectFactory(DjangoModelFactory):
@@ -117,6 +119,15 @@ class BusinessLineFactory(DjangoModelFactory):
 
     name = Sequence(lambda n: 'Business Line #%s' % n)
     ci_uid = Sequence(lambda n: n)
+
+
+class ProfitCenterFactory(DjangoModelFactory):
+    FACTORY_FOR = models.ProfitCenter
+
+    name = Sequence(lambda n: 'Profit Center #%s' % n)
+    description = Sequence(lambda n: 'Profit Center #%s description' % n)
+    ci_uid = Sequence(lambda n: n)
+    business_line = SubFactory(BusinessLineFactory)
 
 
 class TenantInfoFactory(PricingObjectFactory):
@@ -200,4 +211,5 @@ class PricingServiceFactory(DjangoModelFactory):
     FACTORY_FOR = models.PricingService
 
     name = Sequence(lambda n: 'Pricing Service #%s' % n)
+    symbol = Sequence(lambda n: 'ps%s' % n)
     use_universal_plugin = True

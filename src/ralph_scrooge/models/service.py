@@ -36,6 +36,28 @@ class BusinessLine(Named):
         app_label = 'ralph_scrooge'
 
 
+class ProfitCenter(Named):
+    ci_uid = db.CharField(
+        unique=True,
+        null=False,
+        blank=False,
+        verbose_name='CMDB CI UID',
+        max_length=100,
+    )
+    business_line = db.ForeignKey(
+        BusinessLine,
+        null=False,
+        blank=False,
+        default=1,
+        related_name='profit_centers',
+        verbose_name=_('business line'),
+    )
+    description = db.TextField(null=True, default=None)
+
+    class Meta:
+        app_label = 'ralph_scrooge'
+
+
 class Environment(Named):
     environment_id = db.IntegerField(
         verbose_name=_("ralph environment id"),
@@ -54,13 +76,13 @@ class Service(ModelDiffMixin, EditorTrackable, TimeTrackable):
         verbose_name=_("name"),
         max_length=256,
     )
-    business_line = db.ForeignKey(
-        BusinessLine,
+    profit_center = db.ForeignKey(
+        ProfitCenter,
         null=False,
         blank=False,
         default=1,
         related_name='services',
-        verbose_name=_('business line')
+        verbose_name=_('profit center'),
     )
     ci_uid = db.CharField(
         unique=True,
@@ -182,9 +204,7 @@ class ServiceUsageTypes(db.Model):
         'UsageType',
         verbose_name=_("Usage type"),
         related_name="service_division",
-        limit_choices_to={
-            'usage_type': 'SU',
-        },
+        limit_choices_to=db.Q(usage_type='SU') | db.Q(symbol='depreciation'),
     )
     pricing_service = db.ForeignKey(
         PricingService,
@@ -243,5 +263,6 @@ class ServiceEnvironment(db.Model):
 
     def save(self, *args, **kwargs):
         result = super(ServiceEnvironment, self).save(*args, **kwargs)
-        self.dummy_pricing_object  # create dummy pricing object if not exists
+        # call property to create dummy pricing object if not exists
+        self.dummy_pricing_object
         return result

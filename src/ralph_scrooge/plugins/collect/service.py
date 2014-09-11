@@ -12,10 +12,12 @@ from django.db.transaction import commit_on_success
 from ralph.util import plugin
 from ralph.util.api_pricing import get_services
 from ralph_scrooge.models import (
-    BusinessLine,
+    Environment,
+    ProfitCenter,
     Owner,
     OwnershipType,
     Service,
+    ServiceEnvironment,
     ServiceOwnership,
 )
 
@@ -24,7 +26,7 @@ logger = logging.getLogger(__name__)
 
 
 @commit_on_success
-def update_service(data, date, default_business_line):
+def update_service(data, date, default_profit_center):
     created = False
     try:
         service = Service.objects.get(
@@ -36,12 +38,12 @@ def update_service(data, date, default_business_line):
         )
         created = True
     service.name = data['name']
-    if data['business_line'] is not None:
-        service.business_line = BusinessLine.objects.get(
-            ci_uid=data['business_line']
+    if data['profit_center'] is not None:
+        service.profit_center = ProfitCenter.objects.get(
+            ci_uid=data['profit_center']
         )
     else:
-        service.business_line = default_business_line
+        service.profit_center = default_profit_center
     service.save()
 
     # save owners
@@ -73,20 +75,24 @@ def update_service(data, date, default_business_line):
             ) for owner in Owner.objects.filter(cmdb_id__in=to_add)
         ])
 
-    # save environments
-    # TODO
+    for environment_id in (data.get('environments') or []):
+        environment = Environment.objects.get(environment_id=environment_id)
+        ServiceEnvironment.objects.get_or_create(
+            service=service,
+            environment=environment,
+        )
     return created
 
 
-@plugin.register(chain='scrooge', requires=['business_line', 'owner'])
+@plugin.register(chain='scrooge', requires=['profit_center', 'owner'])
 def service(today, **kwargs):
     """
     Updates Services from CMDB
     """
     new_services = total = 0
-    default_business_line = BusinessLine.objects.get(pk=1)
+    default_profit_center = ProfitCenter.objects.get(pk=1)
     for data in get_services():
-        if update_service(data, today, default_business_line):
+        if update_service(data, today, default_profit_center):
             new_services += 1
         total += 1
     return True, '{} new service(s), {} updated, {} total'.format(
