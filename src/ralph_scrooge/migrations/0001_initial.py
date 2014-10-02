@@ -313,6 +313,7 @@ class Migration(SchemaMigration):
             ('ci_id', self.gf('django.db.models.fields.IntegerField')(db_index=True)),
             ('ci_uid', self.gf('django.db.models.fields.CharField')(max_length=100, null=True, blank=True)),
             ('name', self.gf('django.db.models.fields.CharField')(max_length=256)),
+            ('symbol', self.gf('django.db.models.fields.CharField')(max_length=256, null=True, blank=True)),
             ('profit_center', self.gf('django.db.models.fields.related.ForeignKey')(default=1, related_name=u'+', to=orm['ralph_scrooge.ProfitCenter'])),
             ('pricing_service', self.gf('django.db.models.fields.related.ForeignKey')(blank=True, related_name=u'+', null=True, to=orm['ralph_scrooge.PricingService'])),
             (u'history_id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
@@ -335,6 +336,7 @@ class Migration(SchemaMigration):
             ('ci_id', self.gf('django.db.models.fields.IntegerField')(unique=True)),
             ('ci_uid', self.gf('django.db.models.fields.CharField')(max_length=100, null=True, blank=True)),
             ('name', self.gf('django.db.models.fields.CharField')(max_length=256)),
+            ('symbol', self.gf('django.db.models.fields.CharField')(max_length=256, null=True, blank=True)),
             ('profit_center', self.gf('django.db.models.fields.related.ForeignKey')(default=1, related_name=u'services', to=orm['ralph_scrooge.ProfitCenter'])),
             ('pricing_service', self.gf('django.db.models.fields.related.ForeignKey')(blank=True, related_name=u'services', null=True, to=orm['ralph_scrooge.PricingService'])),
         ))
@@ -833,7 +835,8 @@ class Migration(SchemaMigration):
             'modified_by': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "u'+'", 'on_delete': 'models.SET_NULL', 'default': 'None', 'to': "orm['account.Profile']", 'blank': 'True', 'null': 'True'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '256'}),
             'pricing_service': ('django.db.models.fields.related.ForeignKey', [], {'blank': 'True', 'related_name': "u'+'", 'null': 'True', 'to': u"orm['ralph_scrooge.PricingService']"}),
-            'profit_center': ('django.db.models.fields.related.ForeignKey', [], {'default': '1', 'related_name': "u'+'", 'to': u"orm['ralph_scrooge.ProfitCenter']"})
+            'profit_center': ('django.db.models.fields.related.ForeignKey', [], {'default': '1', 'related_name': "u'+'", 'to': u"orm['ralph_scrooge.ProfitCenter']"}),
+            'symbol': ('django.db.models.fields.CharField', [], {'max_length': '256', 'null': 'True', 'blank': 'True'})
         },
         u'ralph_scrooge.owner': {
             'Meta': {'ordering': "[u'profile__nick']", 'object_name': 'Owner'},
@@ -889,7 +892,8 @@ class Migration(SchemaMigration):
             'name': ('django.db.models.fields.CharField', [], {'max_length': '256'}),
             'ownership': ('django.db.models.fields.related.ManyToManyField', [], {'related_name': "u'services'", 'symmetrical': 'False', 'through': u"orm['ralph_scrooge.ServiceOwnership']", 'to': u"orm['ralph_scrooge.Owner']"}),
             'pricing_service': ('django.db.models.fields.related.ForeignKey', [], {'blank': 'True', 'related_name': "u'services'", 'null': 'True', 'to': u"orm['ralph_scrooge.PricingService']"}),
-            'profit_center': ('django.db.models.fields.related.ForeignKey', [], {'default': '1', 'related_name': "u'services'", 'to': u"orm['ralph_scrooge.ProfitCenter']"})
+            'profit_center': ('django.db.models.fields.related.ForeignKey', [], {'default': '1', 'related_name': "u'services'", 'to': u"orm['ralph_scrooge.ProfitCenter']"}),
+            'symbol': ('django.db.models.fields.CharField', [], {'max_length': '256', 'null': 'True', 'blank': 'True'})
         },
         u'ralph_scrooge.serviceenvironment': {
             'Meta': {'unique_together': "((u'service', u'environment'),)", 'object_name': 'ServiceEnvironment'},
