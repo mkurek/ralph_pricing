@@ -18,6 +18,7 @@ from ralph_scrooge.views.usage_types import UsageTypes
 from ralph_scrooge.views.statement import Statements
 from ralph_scrooge.views.teams_percent import TeamsPercent
 from ralph_scrooge.views.monthly_costs import MonthlyCosts
+from ralph_scrooge.views.report_pricing_objects_usages import PricingObjectsUsagesReportView  # noqa
 from ralph_scrooge.views.report_services_changes import ServicesChangesReportView  # noqa
 from ralph_scrooge.views.report_services_costs import ServicesCostsReportView
 from ralph_scrooge.views.report_services_usages import ServicesUsagesReportView  # noqa
@@ -76,6 +77,11 @@ urlpatterns = patterns(
         r'^services-usages-report/$',
         scrooge_permission(ServicesUsagesReportView.as_view()),
         name='services_usages_report',
+    ),
+    url(
+        r'^pricing-objects-usages-report/$',
+        scrooge_permission(PricingObjectsUsagesReportView.as_view()),
+        name='pricing_objects_usages_report',
     ),
     url(
         r'^services-changes-report/$',

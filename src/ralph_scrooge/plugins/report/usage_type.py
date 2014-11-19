@@ -52,5 +52,34 @@ class UsageTypePlugin(BaseReportPlugin):
             result[u['date']][u['service_environment__id']] = u['total']
         return result
 
+    def usages_pricing_object(
+        self,
+        start,
+        end,
+        usage_type,
+        service_environments,
+        *args,
+        **kwargs
+    ):
+        usages = DailyUsage.objects.filter(
+            date__gte=start,
+            date__lte=end,
+            service_environment__in=service_environments,
+            type=usage_type,
+        ).values(
+            'daily_pricing_object__pricing_object_id',
+            'date',
+        ).annotate(
+            total=Sum('value'),
+        )
+
+        result = defaultdict(dict)
+        for u in usages:
+            result[u['date']][u['daily_pricing_object__pricing_object_id']] = u['total']
+        return result
+
     def usages_schema(self, usage_type, *args, **kwargs):
+        return _("{0} count".format(usage_type.name))
+
+    def usages_pricing_object_schema(self, usage_type, *args, **kwargs):
         return _("{0} count".format(usage_type.name))

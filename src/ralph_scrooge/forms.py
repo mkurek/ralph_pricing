@@ -14,6 +14,7 @@ from ralph.ui.widgets import DateWidget
 from ralph_scrooge.models import (
     ExtraCost,
     Service,
+    ServiceEnvironment,
     TeamServiceEnvironmentPercent,
     UsagePrice,
     UsageType,
@@ -281,6 +282,24 @@ class ServicesUsagesReportForm(DateRangeForm):
         required=True,
         queryset=UsageType.objects.order_by('-order', 'name'),
         label=_("Usage types"),
+    )
+
+
+class PricingObjectsUsagesReportForm(DateRangeForm):
+    """
+    Form schema. Used to generate pricing objects daily usages report
+    """
+    is_active = forms.BooleanField(
+        required=False,
+        label=_("Show only active"),
+    )
+    usage_types = forms.ModelMultipleChoiceField(
+        required=True,
+        queryset=UsageType.objects.order_by('-order', 'name'),
+        label=_("Usage types"),
+    )
+    service_environments = forms.ModelChoiceField(
+        queryset=ServiceEnvironment.objects.select_related('service', 'environment').all()
     )
 
 

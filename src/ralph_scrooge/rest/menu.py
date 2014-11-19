@@ -46,6 +46,10 @@ class SubMenu(APIView):
                     'href': '/scrooge/services-usages-report',
                 },
                 {
+                    'name': 'PO Usages report',
+                    'href': '/scrooge/pricing-objects-usages-report',
+                },
+                {
                     'name': 'Services changes report',
                     'href': '/scrooge/services-changes-report',
                 },

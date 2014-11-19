@@ -66,6 +66,12 @@ class ScroogeMenu(Menu):
                 view_name='services_usages_report',
             ),
             MenuItem(
+                _("PO Usages report"),
+                name='pricing-objects-usages-report',
+                fugue_icon='fugue-calendar-day',
+                view_name='pricing_objects_usages_report',
+            ),
+            MenuItem(
                 _("Collect plugins"),
                 name='collect-plugins',
                 fugue_icon='fugue-calendar-day',
