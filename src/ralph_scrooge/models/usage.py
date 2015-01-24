@@ -155,7 +155,7 @@ class DailyUsage(db.Model):
     DailyUsage model contains daily usage information for each
     usage
     """
-    date = db.DateField()
+    date = db.DateField(db_index=True)
     service_environment = db.ForeignKey(
         'ServiceEnvironment',
         related_name='daily_usages',
