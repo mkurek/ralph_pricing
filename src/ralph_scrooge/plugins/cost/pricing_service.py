@@ -423,7 +423,7 @@ class PricingServiceBasePlugin(BaseCostPlugin):
         service environments.
         """
         result = {}
-        for usage_type in UsageType.objects.filter(usage_type='BU').exclude(
+        for usage_type in UsageType.objects.filter(active=True, usage_type='BU').exclude(
                 id__in=pricing_service.excluded_base_usage_types.values_list(
                     'id',
                     flat=True
@@ -475,7 +475,7 @@ class PricingServiceBasePlugin(BaseCostPlugin):
         time (between start and end) and for specified service environments.
         """
         result = {}
-        for team in Team.objects.all():
+        for team in Team.objects.filter(active=True):
             try:
                 team_cost = plugin_runner.run(
                     'scrooge_costs',
@@ -543,7 +543,7 @@ class PricingServiceBasePlugin(BaseCostPlugin):
         :rtype decimal:
         """
         result = {}
-        for extra_cost_type in ExtraCostType.objects.all():
+        for extra_cost_type in ExtraCostType.objects.filter(active=True):
             try:
                 extra_cost = plugin_runner.run(
                     'scrooge_costs',
@@ -579,7 +579,7 @@ class PricingServiceBasePlugin(BaseCostPlugin):
         :rtype decimal:
         """
         result = {}
-        for dynamic_extra_cost_type in DynamicExtraCostType.objects.all():
+        for dynamic_extra_cost_type in DynamicExtraCostType.objects.filter(active=True):
             try:
                 dynamic_extra_cost = plugin_runner.run(
                     'scrooge_costs',

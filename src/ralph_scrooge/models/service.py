@@ -252,6 +252,7 @@ class PricingService(BaseUsage):
         this service (for given date).
         """
         ps = PricingService.objects.filter(
+            active=True,
             serviceusagetypes__usage_type__id__in=DailyUsage.objects.filter(
                 type__usage_type='SU',
                 service_environment__in=ServiceEnvironment.objects.filter(

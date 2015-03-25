@@ -8,33 +8,10 @@ from django.db import models
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
-        try:
-            db.delete_foreign_key('ralph_scrooge_dailycost', 'type_id')
-            db.delete_foreign_key('ralph_scrooge_dailycost', 'pricing_object_id')
-            db.delete_foreign_key('ralph_scrooge_dailycost', 'service_environment_id')
-            db.delete_foreign_key('ralph_scrooge_dailycost', 'warehouse_id')
-        except ValueError as e:
-            print('Foreign keys not deleted', e)
-
-        db.rename_table('ralph_scrooge_dailycost', 'ralph_scrooge_dailycost_backup')
-
-        db.create_table(u'ralph_scrooge_dailycost', (
-            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('path', self.gf('django.db.models.fields.CharField')(max_length=255)),
-            ('depth', self.gf('django.db.models.fields.PositiveIntegerField')(default=0)),
-            ('pricing_object', self.gf('django.db.models.fields.related.ForeignKey')(blank=True, related_name=u'daily_costs', null=True, to=orm['ralph_scrooge.PricingObject'])),
-            ('service_environment', self.gf('django.db.models.fields.related.ForeignKey')(related_name=u'daily_costs', to=orm['ralph_scrooge.ServiceEnvironment'])),
-            ('type', self.gf('django.db.models.fields.related.ForeignKey')(related_name=u'daily_costs', to=orm['ralph_scrooge.BaseUsage'])),
-            ('warehouse', self.gf('django.db.models.fields.related.ForeignKey')(blank=True, related_name=u'daily_costs', null=True, to=orm['ralph_scrooge.Warehouse'])),
-            ('value', self.gf('django.db.models.fields.FloatField')(default=0)),
-            ('cost', self.gf('django.db.models.fields.DecimalField')(default=0, max_digits=16, decimal_places=6)),
-            ('forecast', self.gf('django.db.models.fields.BooleanField')(default=False)),
-            ('date', self.gf('django.db.models.fields.DateField')()),
-        ))
+        db.create_index(u'ralph_scrooge_dailycost', ['type_id', ])
 
     def backwards(self, orm):
-        db.delete_table('ralph_scrooge_dailycost')
-        db.rename_table('ralph_scrooge_dailycost_backup', 'ralph_scrooge_dailycost')
+   	db.delete_index(u'ralph_scrooge_dailycost', ['type_id', ])     
 
     models = {
         'account.profile': {
@@ -106,6 +83,7 @@ class Migration(SchemaMigration):
         },
         u'ralph_scrooge.baseusage': {
             'Meta': {'object_name': 'BaseUsage'},
+            'active': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
             'divide_by': ('django.db.models.fields.IntegerField', [], {'default': '0'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'name': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '75', 'db_index': 'True'}),
@@ -142,10 +120,10 @@ class Migration(SchemaMigration):
             'Meta': {'object_name': 'DailyCost'},
             'cost': ('django.db.models.fields.DecimalField', [], {'default': '0', 'max_digits': '16', 'decimal_places': '6'}),
             'date': ('django.db.models.fields.DateField', [], {}),
-            'depth': ('django.db.models.fields.PositiveIntegerField', [], {'default': '0', 'db_index': 'True'}),
+            'depth': ('django.db.models.fields.PositiveIntegerField', [], {'default': '0'}),
             'forecast': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'path': ('django.db.models.fields.CharField', [], {'max_length': '255', 'db_index': 'True'}),
+            'path': ('django.db.models.fields.CharField', [], {'max_length': '255'}),
             'pricing_object': ('django.db.models.fields.related.ForeignKey', [], {'blank': 'True', 'related_name': "u'daily_costs'", 'null': 'True', 'to': u"orm['ralph_scrooge.PricingObject']"}),
             'service_environment': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "u'daily_costs'", 'to': u"orm['ralph_scrooge.ServiceEnvironment']"}),
             'type': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "u'daily_costs'", 'to': u"orm['ralph_scrooge.BaseUsage']"}),
@@ -255,7 +233,7 @@ class Migration(SchemaMigration):
             u'history_date': ('django.db.models.fields.DateTimeField', [], {}),
             u'history_id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             u'history_type': ('django.db.models.fields.CharField', [], {'max_length': '1'}),
-            u'history_user': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['auth.User']", 'null': 'True'}),
+            u'history_user': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['auth.User']", 'null': 'True', 'on_delete': 'models.SET_NULL'}),
             'id': ('django.db.models.fields.IntegerField', [], {'db_index': 'True', 'blank': 'True'}),
             'manually_allocate_costs': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
             'modified': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime.now'}),

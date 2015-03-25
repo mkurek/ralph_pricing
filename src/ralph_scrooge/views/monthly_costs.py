@@ -37,12 +37,12 @@ class MonthlyCosts(WorkerJob, Base):
     )
     initial = None
 
-    queue_name = get_queue_name('scrooge_costs')
+    queue_name = get_queue_name('scrooge_costs_master')
     cache_name = get_cache_name('scrooge_costs')
     cache_section = 'scrooge_costs'
     cache_timeout = 60 * 60 * 24  # 24 hours (max time for plugin to run)
     cache_final_result_timeout = 60 * 60 * 2  # 2 hours
-    cache_all_done_timeout = 60  # 1 minute
+    cache_all_done_timeout = 60 * 20  # 10 minutes
     refresh_time = 30
 
     def __init__(self, *args, **kwargs):
@@ -164,6 +164,7 @@ class MonthlyCosts(WorkerJob, Base):
             # if day is in statuses, it was already calculated - do not check
             # it again
             if day in statuses:
+                total_progress += step
                 continue
             dcj = DailyCostsJob()
             progress, success, result = dcj.run_on_worker(day=day, **kwargs)
@@ -174,6 +175,7 @@ class MonthlyCosts(WorkerJob, Base):
                 results[day] = result['collector_result']
         # clear cache if all done
         if len(statuses) == days:
+            logger.info('all days done')
             cls.forget_cache(start, end, **kwargs)
             total_progress = 100
         return total_progress, statuses, results
@@ -240,10 +242,15 @@ class MonthlyCosts(WorkerJob, Base):
                         day,
                         forecast,
                     ))
+            logger.info('progress: {}'.format(progress))
+            logger.info(statuses)
             if progress < 100:
                 yield progress, statuses
                 time.sleep(settings.SCROOGE_COSTS_MASTER_SLEEP)
+            else:
+                yield 99, statuses
         # save all costs
+        logger.info('start saving costs')
         cls._save_costs(processed_results, start, end, forecast)
         yield 100, statuses
 

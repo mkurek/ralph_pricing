@@ -45,6 +45,7 @@ class BaseUsage(Named):
         help_text=_("Decimal places"),
         default=0,
     )
+    active = db.BooleanField(default=True, null=False, blank=False)
 
     class Meta:
         app_label = 'ralph_scrooge'

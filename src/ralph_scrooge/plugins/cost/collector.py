@@ -132,7 +132,7 @@ class Collector(object):
         self,
         date,
         forecast=False,
-        delete_verified=False,
+        delete_verified=True,
         plugins=None,
     ):
         """
@@ -405,7 +405,7 @@ class Collector(object):
         """
         Returns services which should be visible on report
         """
-        return PricingService.objects.order_by('id')
+        return PricingService.objects.filter(active=True).order_by('id')
 
     @classmethod
     def _get_pricing_services_plugins(cls):
@@ -430,7 +430,7 @@ class Collector(object):
         """
         Returns teams which should be visible on report
         """
-        return Team.objects.filter(show_in_report=True).order_by('name')
+        return Team.objects.filter(active=True, show_in_report=True).order_by('name')
 
     @classmethod
     def _get_teams_plugins(cls):
@@ -456,7 +456,7 @@ class Collector(object):
         Returns all extra costs (excluding supports)
         """
         # exclude supports (from fixture)
-        return ExtraCostType.objects.exclude(pk=2).order_by('name')
+        return ExtraCostType.objects.exclude(pk=2, active=False).order_by('name')
 
     @classmethod
     def _get_extra_cost_types_plugins(cls):
@@ -491,7 +491,7 @@ class Collector(object):
         """
         Returns all extra costs
         """
-        return DynamicExtraCostType.objects.order_by('name')
+        return DynamicExtraCostType.objects.filter(active=True).order_by('name')
 
     @classmethod
     def _get_dynamic_extra_cost_types_plugins(cls):

@@ -241,7 +241,7 @@ class Command(ScroogeBaseCommand):
         self._calculate_missing_dates(start, end, forecast, plugins)
         filters = {}
         if self.type == 'ceilometer':
-            filters = {'type__name__startswith': 'openstack.'}
+            filters = {'type__name__startswith': 'openstack.ceilometer.'}
         elif self.type == 'nova':
             filters = {'type__name__startswith': 'openstack.nova.'}
         elif self.type == 'simple_usage':
