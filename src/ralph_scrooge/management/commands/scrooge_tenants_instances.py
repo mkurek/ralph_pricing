@@ -33,6 +33,7 @@ class Command(ScroogeBaseCommand):
     """
 
     def add_arguments(self, parser):
+        super(Command, self).add_arguments(parser)
         parser.add_argument(
             '-s', '--start',
             dest='start',

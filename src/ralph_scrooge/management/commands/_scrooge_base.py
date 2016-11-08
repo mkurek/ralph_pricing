@@ -55,7 +55,7 @@ class ScroogeBaseCommand(BaseCommand):
         # call_command function.
         # used in ralph_scrooge/tests/management/commands/test_scrooge_base.py
         parser.add_argument(
-            '-s', '--stdout',
+            '--stdout',
             dest='stdout',
             default=None,
         )
